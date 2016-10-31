@@ -68,13 +68,18 @@ end
 function generate_log()
     local top_log = logs[#logs]
     if top_log == "blank" then
-        table.insert(logs, random_choice({ "left", "right" }))
+        local opposite
+        if logs[#logs-1] == "right" then
+            opposite = "left"
+        else
+            opposite = "right"
+        end
+        table.insert(logs, opposite)
     else
-        table.insert(logs, random_choice({ top_log, "blank" }))
+        if love.math.random() > 0.3 then
+            table.insert(logs, "blank")
+        else
+            table.insert(logs, top_log)
+        end
     end
-end
-
-function random_choice(items)
-    local random_index = love.math.random(1, #items)
-    return items[random_index]
 end
