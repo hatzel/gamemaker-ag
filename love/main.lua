@@ -72,7 +72,7 @@ function chop()
         score = score + 1
         table.remove(logs, 1)
     end
-    man_chopping_timer = 0.2
+    man_chopping_timer = 0.05
     generate_log()
 end
 
