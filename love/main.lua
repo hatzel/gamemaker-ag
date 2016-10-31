@@ -51,7 +51,7 @@ function love.keypressed(key)
 end
 
 function chop()
-    if side == logs[2] then
+    if side == logs[1] then
         score = score - 1
         restart()
     else 
@@ -62,9 +62,15 @@ function chop()
 end
 
 function generate_log()
-    if love.math.random(0, 1) > 0.5 then
-       table.insert(logs, "left") 
+    local top_log = logs[#logs]
+    if top_log == "blank" then
+        table.insert(logs, random_choice({ "left", "right", "blank" }))
     else
-        table.insert(logs, "right")
+        table.insert(logs, random_choice({ top_log, "blank" }))
     end
+end
+
+function random_choice(items)
+    local random_index = math.floor(love.math.random(1, #items + 1))
+    return items[random_index]
 end
