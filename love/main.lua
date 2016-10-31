@@ -1,6 +1,7 @@
 function love.load()
     man = love.graphics.newImage("images/man.png")
     log = love.graphics.newImage("images/tree.png")
+    log_blank = love.graphics.newImage("images/tree2.png")
 
     restart()
 end
@@ -28,12 +29,15 @@ function love.draw()
 
     love.graphics.draw(man, position_x, 250, 0, scale_x, 1)
 
-    for i, direction in pairs(logs) do
+    for i, direction in ipairs(logs) do
         local scale_x = 1
+        local image = log
         if direction == "left" then
             scale_x = -1
+        elseif direction == "blank" then
+            image = log_blank
         end
-        love.graphics.draw(log, 400, 500 - (i * 200), 0, scale_x, 1, log:getWidth()/2)
+        love.graphics.draw(image, 400, 500 - (i * 200), 0, scale_x, 1, log:getWidth()/2)
     end
 
     love.graphics.setColor(0, 0, 0)
@@ -51,7 +55,7 @@ function love.keypressed(key)
 end
 
 function chop()
-    if side == logs[1] then
+    if side == logs[1] or side == logs[2] then
         score = score - 1
         restart()
     else 
@@ -71,6 +75,6 @@ function generate_log()
 end
 
 function random_choice(items)
-    local random_index = math.floor(love.math.random(1, #items + 1))
+    local random_index = love.math.random(1, #items)
     return items[random_index]
 end
