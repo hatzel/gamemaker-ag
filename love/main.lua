@@ -1,7 +1,9 @@
 function love.load()
     man = love.graphics.newImage("images/man.png")
+    man_chopping = love.graphics.newImage("images/man2.png")
     log = love.graphics.newImage("images/tree.png")
     log_blank = love.graphics.newImage("images/tree2.png")
+    man_chopping_timer = 0
 
     restart()
 end
@@ -16,6 +18,10 @@ function restart()
     score = 0
 end
 
+function love.update(dt)
+    man_chopping_timer = man_chopping_timer - dt
+end
+
 function love.draw()
     love.graphics.clear(255, 255, 255)
 
@@ -27,7 +33,12 @@ function love.draw()
         scale_x = -1
     end
 
-    love.graphics.draw(man, position_x, 250, 0, scale_x, 1)
+    local man_image = man
+    if man_chopping_timer > 0 then
+        man_chopping_timer = 0
+        man_image = man_chopping
+    end
+    love.graphics.draw(man_image, position_x, 250, 0, scale_x, 1)
 
     for i, direction in ipairs(logs) do
         local scale_x = 1
@@ -62,6 +73,7 @@ function chop()
         score = score + 1
         table.remove(logs, 1)
     end
+    man_chopping_timer = 0.5
     generate_log()
 end
 
