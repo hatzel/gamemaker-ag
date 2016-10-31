@@ -1,14 +1,14 @@
 function love.load()
     man = love.graphics.newImage("images/man.png")
     log = love.graphics.newImage("images/tree.png")
-    side = "right"
 
     restart()
 end
 
 function restart()
-    logs = {}
-    for i = 1, 3, 1 do
+    logs = {"left"}
+    side = "right"
+    for i = 1, 2, 1 do
         generate_log()
     end
 
@@ -36,6 +36,7 @@ function love.draw()
         love.graphics.draw(log, 400, 500 - (i * 200), 0, scale_x, 1, log:getWidth()/2)
     end
 
+    love.graphics.setColor(0, 0, 0)
     love.graphics.print(score, 20, 20)
 end
 
@@ -50,7 +51,7 @@ function love.keypressed(key)
 end
 
 function chop()
-    if side == logs[1] then
+    if side == logs[2] then
         score = score - 1
         restart()
     else 
