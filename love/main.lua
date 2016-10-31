@@ -68,7 +68,7 @@ end
 function generate_log()
     local top_log = logs[#logs]
     if top_log == "blank" then
-        table.insert(logs, random_choice({ "left", "right", "blank" }))
+        table.insert(logs, random_choice({ "left", "right" }))
     else
         table.insert(logs, random_choice({ top_log, "blank" }))
     end
