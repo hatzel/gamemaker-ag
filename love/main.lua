@@ -68,11 +68,11 @@ function chop()
     if side == logs[1] or side == logs[2] then
         score = score - 1
         restart()
-    else 
+    else
         score = score + 1
         table.remove(logs, 1)
     end
-    man_chopping_timer = 0.05
+    man_chopping_timer = 0.1
     generate_log()
 end
 
