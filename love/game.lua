@@ -12,6 +12,8 @@ function state.load()
         generate_log()
     end
 
+    flying_logs = {}
+
     score = 0
     man_chopping_timer = 0
     game_over_timer = 5
@@ -27,6 +29,13 @@ function state.update(dt)
 
     if game_over_timer <= 0 then
         gameOver()
+    end
+
+    for i, flying_log in ipairs(flying_logs) do
+        flying_log.timer = flying_log.timer + dt
+        if flying_log.timer > 0.3 then
+            table.remove(flying_logs, i)
+        end
     end
 end
 
@@ -58,6 +67,25 @@ function state.draw()
         love.graphics.draw(image, 400, 500 - (i * 200), 0, scale_x, 1, log:getWidth()/2)
     end
 
+    for i, flying_log in ipairs(flying_logs) do
+        local direction = 1
+        if flying_log.side == "left" then
+            direction = -1
+        end
+
+        local x = flying_log.timer * 100 * direction
+        local image = log
+        local scale_x = 1
+        if flying_log.log_type == "left" then
+            scale_x = -1
+        elseif flying_log.log_type == "blank" then
+            image = log_blank
+        end
+
+        love.graphics.setColor(255, 255, 255, 255 * (1 - flying_log.timer/0.3))
+        love.graphics.draw(image, 400 + x, 300, flying_log.timer * direction, scale_x, 1, image:getWidth()/2)
+    end
+
     love.graphics.setColor(0, 0, 0)
     love.graphics.print(score, 20, 20)
     love.graphics.rectangle('fill', 50, 20, 20 * game_over_timer, 10)
@@ -78,6 +106,11 @@ function chop()
         gameOver()
     else
         score = score + 1
+        table.insert(flying_logs, {
+            timer = 0,
+            log_type = logs[1],
+            side = oppositeSide(side)
+        });
         table.remove(logs, 1)
     end
     man_chopping_timer = 0.1
@@ -102,6 +135,13 @@ function generate_log()
             table.insert(logs, top_log)
         end
     end
+end
+
+function oppositeSide(side)
+    if side == 'left' then
+        return 'right'
+    end
+    return 'left'
 end
 
 return state
