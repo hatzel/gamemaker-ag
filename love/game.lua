@@ -73,7 +73,7 @@ function state.draw()
             direction = -1
         end
 
-        local x = flying_log.timer * 100 * direction
+        local x = flying_log.timer * 150 * direction
         local image = log
         local scale_x = 1
         if flying_log.log_type == "left" then
@@ -83,7 +83,7 @@ function state.draw()
         end
 
         love.graphics.setColor(255, 255, 255, 255 * (1 - flying_log.timer/0.3))
-        love.graphics.draw(image, 400 + x, 300, flying_log.timer * direction, scale_x, 1, image:getWidth()/2)
+        love.graphics.draw(image, 400 + x, 300, flying_log.timer/4 * direction, scale_x, 1, image:getWidth()/2)
     end
 
     love.graphics.setColor(0, 0, 0)
